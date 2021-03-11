@@ -2,9 +2,15 @@ import React from 'react';
 
 import './styles/global.css';
 
+import Navbar from './components/Navbar';
+import Routes from './routes'
+
 function App() {
   return (
-    <h2>Teste</h2>
+    <>
+      <Navbar />
+      <Routes />
+    </>
   );
 }
 
