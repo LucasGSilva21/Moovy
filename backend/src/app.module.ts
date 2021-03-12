@@ -1,3 +1,4 @@
+import { MoviesModule } from './movies/movies.module';
 import { AuthModule } from './auth/auth.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
@@ -14,7 +15,9 @@ import { UsersModule } from './users/users.module';
     }),
     MongooseModule.forRoot(process.env.MONGO_URI),
     UsersModule,
-    AuthModule,],
+    AuthModule,
+    MoviesModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
