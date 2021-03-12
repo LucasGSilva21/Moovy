@@ -1,4 +1,4 @@
-import React, { useState ,useEffect } from 'react';
+import React, { useState } from 'react';
 import { api } from '../../services/api';
 
 import { 
@@ -8,11 +8,12 @@ import {
   CardMedia,
   CardActions,
   Button,
-  Icon
+  Icon,
+  IconButton
 } from '@material-ui/core';
 
 import { makeStyles } from '@material-ui/core/styles';
-
+import SearchIcon from '@material-ui/icons/Search';
 import book from '../../images/book.svg';
 
 interface Movie {
@@ -29,6 +30,18 @@ const useStyles = makeStyles({
   },
   containerBotton: {
     justifyContent: 'center'
+  },
+  containerInput: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 15,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  input: {
+    flex: 1,
+    border: 0,
+    outline: 'none',
+    borderRadius: 15,
   }
 });
 
@@ -36,28 +49,35 @@ function Search() {
   const classes = useStyles();
   const { REACT_APP_KEY } = process.env;
 
-  const search = 'rocky';
+  const [search, setSearch] = useState('');
 
   const [movies, setMovies] = useState<Movie[]>([]);
 
-  useEffect(() => {
-		api.get(`/?s=${search}&apikey=${REACT_APP_KEY}&plot=full`).then(response => {
-      console.log(response.data.Search)
-			setMovies(response.data.Search);
-		});
-	}, []);
+  function getMovies() {
+    api.get(`/?s=${search}&apikey=${REACT_APP_KEY}&plot=full`).then(response => {
+      setMovies(response.data.Search);
+    });
+  }
 
   return (
     <Grid container direction='column'>
       <Grid container justify='center'>
-        <Grid xs={8}>
-        <h2>Search</h2>
+        <Grid lg={8} sm={10} xs={10}>
+          <h2>Search</h2>
+        </Grid>
+      </Grid>
+      <Grid container justify='center'>
+        <Grid container lg={8} sm={10} xs={10} className={classes.containerInput} justify='space-between'>
+          <input value={search} onChange={e => setSearch(e.target.value)} type="text" className={classes.input}/>
+          <IconButton type="submit" onClick={getMovies}>
+            <SearchIcon />
+          </IconButton>
         </Grid>
       </Grid>
       <Grid container justify='center'>
         <Grid container spacing={2} lg={8} sm={10} xs={10}>
           {
-            movies.map(movie => {
+            movies && movies.map(movie => {
               return (
                 <Grid key={movie.imdbID} item lg={3} sm={6} xs={10} >
                   <Card>
