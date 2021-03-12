@@ -34,14 +34,14 @@ const useStyles = makeStyles({
 
 function Search() {
   const classes = useStyles();
+  const { REACT_APP_KEY } = process.env;
 
-  const key = '39408d24';
   const search = 'rocky';
 
   const [movies, setMovies] = useState<Movie[]>([]);
 
   useEffect(() => {
-		api.get(`/?s=${search}&apikey=${key}&plot=full`).then(response => {
+		api.get(`/?s=${search}&apikey=${REACT_APP_KEY}&plot=full`).then(response => {
       console.log(response.data.Search)
 			setMovies(response.data.Search);
 		});
