@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { Nav, Logo, List, Item } from './styles';
 
@@ -7,8 +8,8 @@ function Navbar() {
     <Nav>
         <Logo>Moovy</Logo>
         <List>
-            <Item>Search</Item>
-            <Item>My Library</Item>
+            <Link to="/search"><Item>Search</Item></Link>
+            <Link to="/"><Item>My Library</Item></Link>
         </List>
     </Nav>
   );
