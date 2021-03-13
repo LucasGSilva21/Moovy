@@ -9,7 +9,7 @@ function Navbar() {
         <Logo>Moovy</Logo>
         <List>
             <Link to="/search"><Item>Search</Item></Link>
-            <Link to="/"><Item>My Library</Item></Link>
+            <Link to="/library"><Item>My Library</Item></Link>
         </List>
     </Nav>
   );

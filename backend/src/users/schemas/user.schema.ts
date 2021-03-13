@@ -4,7 +4,7 @@ import * as bcrypt from 'bcrypt';
 export const UserSchema = new Schema({
     name: {
         type: String,
-        minlength: 6,
+        minlength: 3,
         maxlength: 255,
         required: true,
     },
@@ -12,7 +12,7 @@ export const UserSchema = new Schema({
         type: String,
         required: true,
         unique: true,
-        minlength: 6,
+        minlength: 5,
         maxlength: 255,
         lowercase: true,
     },
