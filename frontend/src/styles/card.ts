@@ -57,4 +57,18 @@ export const useStyles = makeStyles({
         backgroundColor: '#0ACF83',
         borderRadius: 15
     },
+    inputContainer: {
+        width: '80%',
+        backgroundColor: '#FFFFFF',
+        borderRadius: 15,
+        marginTop: 10,
+        marginBottom: 10,
+    },
+    input: {
+        flex: 1,
+        border: 0,
+        outline: 'none',
+        borderRadius: 15,
+        paddingLeft: 15
+    }
 });

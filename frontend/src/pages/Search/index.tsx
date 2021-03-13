@@ -14,9 +14,9 @@ import {
   IconButton
 } from '@material-ui/core';
 
-import { makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import book from '../../images/book.svg';
+import { useStyles } from '../../styles/card';
 
 interface Movie {
   Poster: string;
@@ -26,35 +26,12 @@ interface Movie {
   imdbID: string;
 }
 
-const useStyles = makeStyles({
-  botton: {
-    backgroundColor: '#0ACF83'
-  },
-  containerBotton: {
-    justifyContent: 'center'
-  },
-  containerInput: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 15,
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  input: {
-    flex: 1,
-    border: 0,
-    outline: 'none',
-    borderRadius: 15,
-  }
-});
-
 function Search() {
-  const userId = '604bb33731383630ef00d469';
-
   const classes = useStyles();
   const { REACT_APP_KEY } = process.env;
+  const userId = '604bb33731383630ef00d469';
 
   const [search, setSearch] = useState('');
-
   const [movies, setMovies] = useState<Movie[]>([]);
 
   function getMovies() {
@@ -75,40 +52,34 @@ function Search() {
     <>
       <Navbar />
       <Grid container direction='column'>
-        <Grid container justify='center'>
-          <Grid lg={8} sm={10} xs={10}>
-            <h2>Search</h2>
-          </Grid>
-        </Grid>
-        <Grid container justify='center'>
-          <Grid container lg={8} sm={10} xs={10} className={classes.containerInput} justify='space-between'>
+        <Grid container justify='center' className={classes.titleContainer}>
+          <h2 className={classes.title}>Search</h2>
+          <Grid container className={classes.inputContainer} justify='space-between'>
             <input value={search} onChange={e => setSearch(e.target.value)} type="text" className={classes.input}/>
             <IconButton type="submit" onClick={getMovies}>
               <SearchIcon />
             </IconButton>
           </Grid>
         </Grid>
-        <Grid container justify='center'>
-          <Grid container spacing={2} lg={8} sm={10} xs={10}>
+        <Grid justify='center' className={classes.listContainer}>
+          <Grid container spacing={2} className={classes.list}>
             {
               movies && movies.map(movie => {
                 return (
                   <Grid key={movie.imdbID} item lg={3} sm={6} xs={10} >
-                    <Card>
-                      <CardContent>
+                    <Card className={classes.card}>
+                      <CardContent className={classes.cardContent}>
                         <CardMedia 
                           component="img"
                           src={movie.Poster}
                           title={movie.Title}
-                          style={{
-                            height: 420,
-                          }}
+                          className={classes.cardImage}
                         />
                         <h3>{movie.Title}</h3>
                         <CardActions className={classes.containerBotton}>
                           <Button
                             variant="contained"
-                            className={classes.botton}
+                            className={classes.buttonGreen}
                             onClick={() => saveMovie(movie.imdbID)}
                           >
                           <Icon>
