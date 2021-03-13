@@ -63,7 +63,6 @@ function Search() {
     });
   }
 
-  //imdbRating
   function saveMovie(imdbID: string) {
     apiMoovy.post('/movies', {
       userId, movieId: imdbID

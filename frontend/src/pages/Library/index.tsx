@@ -10,7 +10,12 @@ import {
   CardMedia,
   CardActions,
   Button,
+  Icon
 } from '@material-ui/core';
+
+import { useStyles } from '../../styles/card';
+import book from '../../images/book.svg';
+import star from '../../images/star.svg';
 
 interface UserMovies {
   _id: string;
@@ -22,6 +27,7 @@ interface UserMovies {
 }
 
 interface MovieDetail {
+  id: string;
   imdbID: string;
   Poster: string;
   Title: string;
@@ -29,6 +35,8 @@ interface MovieDetail {
 }
 
 function Library() {
+  const classes = useStyles();
+
   const userId = '604bb33731383630ef00d469';
   const { REACT_APP_KEY } = process.env;
 
@@ -41,7 +49,7 @@ function Library() {
 		});
 	}, []);
 
-  async function getDetail(movieId: string): Promise<MovieDetail> {
+  async function getDetail(id: string, movieId: string): Promise<MovieDetail> {
     const result = await apiOmdb.get(`/?i=${movieId}&apikey=${REACT_APP_KEY}`);
 
     const imdbID = result.data.imdbID;
@@ -49,46 +57,62 @@ function Library() {
     const Title = result.data.Title;
     const imdbRating = result.data.imdbRating;
 
-    return { imdbID, Poster, Title, imdbRating }
+    return { Poster, Title, id, imdbID, imdbRating }
   }
 
   useEffect(() => {
 		Promise.all(userMovies.map(async userMovie => {
-      return await getDetail(userMovie.movieId)
+      return await getDetail(userMovie._id ,userMovie.movieId)
     })).then(result => setMovies(result))
 	}, [userMovies]);
+
+  function removeMovie(id: string) {
+    apiMoovy.delete(`/movies/${id}`).then(response => {
+      apiMoovy.get(`/movies/user/${userId}`).then(response => {
+        setUserMovies(response.data);
+      });
+      alert('Deletado com sucesso!');
+    });
+  }
 
   return (
     <>
       <Navbar />
       <Grid container direction='column'>
-        <Grid container justify='center'>
-          <Grid item lg={8} sm={10} xs={10}>
-            <h2>My Library</h2>
-          </Grid>
+        <Grid className={classes.titleContainer}>
+          <h2 className={classes.title}>My Library</h2>
         </Grid>
-        <Grid container justify='center'>
-          <Grid container spacing={2} lg={8} sm={10} xs={10}>
+        <Grid justify='center' className={classes.listContainer}>
+          <Grid container spacing={2} className={classes.list}>
             {
-              userMovies && movies.map(movie => {
+              movies && movies.map(movie => {
                 return (
-                  <Grid key={movie.imdbID} item lg={3} sm={6} xs={10} >
-                    <Card>
-                      <CardContent>
+                  <Grid key={movie.imdbID} item>
+                    <Card className={classes.card}>
+                      <CardContent className={classes.cardContent}>
                         <CardMedia 
                           component="img"
                           src={movie.Poster}
                           title={movie.Title}
-                          style={{
-                            height: 420,
-                          }}
+                          className={classes.cardImage}
                         />
-                        <h3>{movie.Title}</h3>
-                        <CardActions>
+                        <Grid className={classes.cardMain}>
+                          <h3 className={classes.cardTitle}>{movie.Title}</h3>
+                          <Icon>
+                              <img src={star} height={25} width={25}/>
+                          </Icon>
+                          <span>{movie.imdbRating}</span>
+                        </Grid>
+                        <CardActions className={classes.containerBotton}>
                           <Button
                             variant="contained"
+                            className={classes.buttonRed}
+                            onClick={() => removeMovie(movie.id)}
                           >
-                            Delete
+                            <Icon>
+                              <img src={book} height={25} width={25}/>
+                            </Icon>
+                            Remove
                           </Button>
                         </CardActions>
                       </CardContent>
