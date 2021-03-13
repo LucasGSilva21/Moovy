@@ -8,9 +8,9 @@ export class MoviesController {
         private moviesService: MoviesService,
     ) { }
 
-    @Get()
-    async getAll(): Promise<Movie[]> {
-        return this.moviesService.getAll();
+    @Get('user/:userId')
+    async getAllByUser(@Param('userId') userId: string): Promise<Movie[]> {
+        return this.moviesService.getAll(userId);
     }
 
     @Get(':id')

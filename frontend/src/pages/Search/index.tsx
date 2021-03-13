@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { api } from '../../services/api';
+import { apiOmdb, apiMoovy } from '../../services/api';
 
 import { 
   Grid,
@@ -46,6 +46,8 @@ const useStyles = makeStyles({
 });
 
 function Search() {
+  const userId = '604bb33731383630ef00d469';
+
   const classes = useStyles();
   const { REACT_APP_KEY } = process.env;
 
@@ -54,8 +56,17 @@ function Search() {
   const [movies, setMovies] = useState<Movie[]>([]);
 
   function getMovies() {
-    api.get(`/?s=${search}&apikey=${REACT_APP_KEY}&plot=full`).then(response => {
+    apiOmdb.get(`/?s=${search}&apikey=${REACT_APP_KEY}`).then(response => {
       setMovies(response.data.Search);
+    });
+  }
+
+  //imdbRating
+  function saveMovie(imdbID: string) {
+    apiMoovy.post('/movies', {
+      userId, movieId: imdbID
+    }).then(response => {
+      alert('Salvo com sucesso!');
     });
   }
 
@@ -95,6 +106,7 @@ function Search() {
                         <Button
                           variant="contained"
                           className={classes.botton}
+                          onClick={() => saveMovie(movie.imdbID)}
                         >
                         <Icon>
                             <img src={book} height={25} width={25}/>

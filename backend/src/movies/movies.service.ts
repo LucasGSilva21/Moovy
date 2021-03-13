@@ -7,8 +7,8 @@ import { Model } from 'mongoose';
 export class MoviesService {
     constructor(@InjectModel('Movie') private readonly movieModel: Model<Movie>) {}
 
-    async getAll() {
-        return await this.movieModel.find().exec();
+    async getAll(userId: string) {
+        return await this.movieModel.find({ userId }).exec();
     }
     
     async getById(id: string) {

@@ -1,5 +1,9 @@
 import axios from 'axios';
 
-export const api = axios.create({
+export const apiMoovy = axios.create({
+    baseURL: 'http://localhost:3333'
+});
+
+export const apiOmdb = axios.create({
     baseURL: 'http://www.omdbapi.com'
 });
