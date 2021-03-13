@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { apiMoovy } from '../../services/api';
 import { login } from "../../services/auth";
 
@@ -9,13 +9,15 @@ import {
   Button
 } from '@material-ui/core';
 
+import { useStyles } from '../../styles/form';
+
 function SignIn() {
+    const classes = useStyles();
+    const history = useHistory();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
     const [error, setError] = useState('');
-
-    const history = useHistory();
 
     function validate(){
         if(email === ''){
@@ -53,37 +55,39 @@ function SignIn() {
     }
 
     return (
-        <Grid container>
-            <Grid
-                container
-                justify="center"
-                alignItems="center"
-            >
-                { error && <span>{error}</span>}
-                <form onSubmit={loginService}>
-                    <Grid 
-                        container
-                        direction="column"
-                    >
-                        <TextField 
-                            id="standard-basic" 
-                            label="Email *" 
-                            type="email"
-                            onChange={e => setEmail(e.target.value)}
-                        />
-                        <TextField 
-                            id="standard-basic" 
-                            label="Password *" 
-                            type="password"
-                            onChange={e => setPassword(e.target.value)}
-                        />
-
-                        <Button variant="contained" color="primary" type="submit">
-                            Login
-                        </Button>
-                    </Grid>
-                </form>
-            </Grid>
+        <Grid
+            className={classes.container}
+            direction="column"
+            justify="center"
+            alignItems="center"
+        >
+            <form onSubmit={loginService} className={classes.form}>
+                { error && <span className={classes.error}>{error}</span>}
+                <TextField 
+                    id="standard-basic" 
+                    label="Email *" 
+                    type="email"
+                    variant="outlined"
+                    onChange={e => setEmail(e.target.value)}
+                    className={classes.field}
+                />
+                <TextField 
+                    id="standard-basic" 
+                    label="Password *" 
+                    type="password"
+                    variant="outlined"
+                    onChange={e => setPassword(e.target.value)}
+                    className={classes.field}
+                />
+                <Button 
+                    variant="contained" 
+                    type="submit"
+                    className={classes.botton}
+                >
+                    Sign In
+                </Button>   
+                <Link to="/signup" className={classes.link}>Sign Up</Link> 
+            </form>
         </Grid>
     )
 }
