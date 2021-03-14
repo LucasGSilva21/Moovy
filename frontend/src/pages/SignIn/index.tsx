@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useHistory } from "react-router-dom";
 import { apiMoovy } from '../../services/api';
-import { login } from "../../services/auth";
+import { AuthContext } from '../../contexts/AuthContext';
 
 import { 
   Grid,
@@ -14,6 +14,7 @@ import { useStyles } from '../../styles/form';
 function SignIn() {
     const classes = useStyles();
     const history = useHistory();
+    const { login } = useContext(AuthContext);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -48,10 +49,10 @@ function SignIn() {
         await apiMoovy.post('/auth/login', { email, password }).then(response => {
             login(response.data.access_token)
             history.push('library');
-        }).catch(() => {
+        }).catch((err) => {
+            console.log(err.message)
             setError('Error! Check your credentials');
         });
-        
     }
 
     return (

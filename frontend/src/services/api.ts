@@ -1,12 +1,11 @@
 import axios from 'axios';
-import { getToken } from "./auth";
 
 const apiMoovy = axios.create({
     baseURL: 'http://localhost:3333'
 });
 
 apiMoovy.interceptors.request.use(async config => {
-    const token = getToken();
+    const token = localStorage.getItem("@Token")
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

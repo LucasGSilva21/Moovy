@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
-import { isAuthenticated } from "./services/auth";
+import { AuthContext } from './contexts/AuthContext';
+//import { isAuthenticated } from "./services/auth";
 
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
@@ -13,18 +14,22 @@ interface IProps {
     path: string;
 }
 
-const PrivateRoute = ({ component: Component, ...rest }: IProps) => (
+const PrivateRoute = ({ component: Component, ...rest }: IProps) => {
+  const { token } = useContext(AuthContext);
+
+  return (
     <Route
       {...rest}
       render={props =>
-        isAuthenticated() ? (
+        token ? (
           <Component {...props} />
         ) : (
           <Redirect to={{ pathname: "/", state: { from: props.location } }} />
         )
       }
     />
-);
+  )
+};
 
 function Routes(){
     return (
