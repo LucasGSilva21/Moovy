@@ -64,7 +64,7 @@ function Search() {
         <Grid justify='center' className={classes.listContainer}>
           <Grid container spacing={2} className={classes.list}>
             {
-              movies && movies.map(movie => {
+              movies ? (movies.map(movie => {
                 return (
                   <Grid key={movie.imdbID} item lg={3} sm={6} xs={10} >
                     <Card className={classes.card}>
@@ -92,7 +92,9 @@ function Search() {
                     </Card>
                   </Grid>
                 )
-              })
+              })) : (
+                <p>We couldn´t find the movies you were lookin for :(</p>
+              )
             }
           </Grid>
         </Grid>

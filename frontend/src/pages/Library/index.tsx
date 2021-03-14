@@ -42,10 +42,13 @@ function Library() {
 
   const [userMovies, setUserMovies] = useState<UserMovies[]>([]);
   const [movies, setMovies] = useState<MovieDetail[]>([]);
+  const [empty, setEmpty] = useState(true);
 
   useEffect(() => {
 		apiMoovy.get(`/movies/user/${userId}`).then(response => {
-      setUserMovies(response.data);
+      const { data } = response;
+      setUserMovies(data);
+      if(data.length === 0) setEmpty(false);
 		});
 	}, []);
 
@@ -82,6 +85,9 @@ function Library() {
         <Grid className={classes.titleContainer}>
           <h2 className={classes.title}>My Library</h2>
         </Grid>
+        { !empty && 
+          <p>It looks like there are no movies in your library! Search for a movie you have watched and add it here!</p> 
+        }
         <Grid justify='center' className={classes.listContainer}>
           <Grid container spacing={2} className={classes.list}>
             {
