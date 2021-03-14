@@ -1,8 +1,9 @@
-import { createContext, useState, ReactNode } from "react";
+import { createContext, useEffect, useState, ReactNode } from "react";
 
 interface AuthContextData {
     token: string;
-    login: (token: string) => void;
+    userId: string;
+    login: (token: string, userId: string) => void;
     logout: () => void;
 }
 
@@ -14,21 +15,37 @@ export const AuthContext = createContext({} as AuthContextData);
 
 export function AuthProvider({ children }: AuthProviderProps) {
     const [token, setToken] = useState('');
-    const TOKEN_KEY = "@Token";
+    const [userId, setUserId] = useState('');
 
-    function login(token: string) {
+    const TOKEN_KEY = "@Token";
+    const USER_ID = "@UserId";
+
+    useEffect(() => {
+		const localToken = localStorage.getItem(TOKEN_KEY);
+        const localUserId = localStorage.getItem(USER_ID);
+
+        localToken && setToken(localToken);
+        localUserId && setUserId(localUserId);
+	}, []);
+
+    function login(token: string, userId: string) {
         setToken(token);
+        setUserId(userId);
         localStorage.setItem(TOKEN_KEY, token);
+        localStorage.setItem(USER_ID, userId);
     }
 
     function logout() {
         setToken('');
+        setUserId('');
         localStorage.removeItem(TOKEN_KEY);
+        localStorage.removeItem(USER_ID);
     }
 
     return (
         <AuthContext.Provider value={{
             token,
+            userId,
             login,
             logout
         }}>

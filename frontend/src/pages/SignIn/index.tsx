@@ -47,7 +47,8 @@ function SignIn() {
         if(!validate()) return;
 
         await apiMoovy.post('/auth/login', { email, password }).then(response => {
-            login(response.data.access_token)
+            const { access_token, user } = response.data;
+            login(access_token, user.id);
             history.push('library');
         }).catch((err) => {
             console.log(err.message)

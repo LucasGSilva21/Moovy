@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../../contexts/AuthContext';
 import { apiOmdb, apiMoovy } from '../../services/api';
 
 import Navbar from '../../components/Navbar';
@@ -37,7 +38,7 @@ interface MovieDetail {
 function Library() {
   const classes = useStyles();
 
-  const userId = '604bb33731383630ef00d469';
+  const { userId } = useContext(AuthContext);
   const { REACT_APP_KEY } = process.env;
 
   const [userMovies, setUserMovies] = useState<UserMovies[]>([]);
