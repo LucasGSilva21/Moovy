@@ -17,6 +17,7 @@ export const useStyles = makeStyles({
         width: 500,
         height: 450,
         padding: 50,
+        boxShadow: '9px 7px 5px #bdbdbd'
     },
     formTitle: {
         textAlign: 'center',
