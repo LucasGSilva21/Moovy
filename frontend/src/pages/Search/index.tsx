@@ -2,6 +2,9 @@ import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import { apiOmdb, apiMoovy } from '../../services/api';
 
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
 import Navbar from '../../components/Navbar';
 
 import { 
@@ -32,6 +35,8 @@ function Search() {
   const { REACT_APP_KEY } = process.env;
   const { userId } = useContext(AuthContext);
 
+  const MySwal = withReactContent(Swal);
+
   const [search, setSearch] = useState('');
   const [movies, setMovies] = useState<Movie[]>([]);
 
@@ -44,8 +49,13 @@ function Search() {
   function saveMovie(imdbID: string) {
     apiMoovy.post('/movies', {
       userId, movieId: imdbID
-    }).then(response => {
-      alert('Salvo com sucesso!');
+    }).then(() => {
+      MySwal.fire({
+        title: 'Success!',
+        text: 'Saved in library.',
+        icon: 'success',
+        confirmButtonColor: '#0ACF83',
+      })
     });
   }
 
@@ -84,7 +94,7 @@ function Search() {
                             onClick={() => saveMovie(movie.imdbID)}
                           >
                           <Icon>
-                              <img src={book} height={25} width={25}/>
+                              <img src={book} height={25} width={25} alt="book icon"/>
                           </Icon>
                             Add to My Library
                           </Button>

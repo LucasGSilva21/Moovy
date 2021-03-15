@@ -2,6 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import { apiOmdb, apiMoovy } from '../../services/api';
 
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
 import Navbar from '../../components/Navbar';
 
 import { 
@@ -45,6 +48,8 @@ function Library() {
   const [movies, setMovies] = useState<MovieDetail[]>([]);
   const [empty, setEmpty] = useState(true);
 
+  const MySwal = withReactContent(Swal);
+
   useEffect(() => {
 		apiMoovy.get(`/movies/user/${userId}`).then(response => {
       const { data } = response;
@@ -70,13 +75,29 @@ function Library() {
     })).then(result => setMovies(result))
 	}, [userMovies]);
 
-  function removeMovie(id: string) {
-    apiMoovy.delete(`/movies/${id}`).then(response => {
-      apiMoovy.get(`/movies/user/${userId}`).then(response => {
-        setUserMovies(response.data);
-      });
-      alert('Deletado com sucesso!');
-    });
+  function removeMovie(id: string, title: string) {
+    MySwal.fire({
+      title: 'Remove from your library?',
+      text: `Are you sure you want to remove “${title}” from your library?`,
+      showCancelButton: true,
+      confirmButtonColor: '#FE6D8E',
+      cancelButtonColor: '#A1A1A1',
+      confirmButtonText: 'Delete'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        apiMoovy.delete(`/movies/${id}`).then(() => {
+          apiMoovy.get(`/movies/user/${userId}`).then(response => {
+            setUserMovies(response.data);
+          }).then(() => {
+            MySwal.fire(
+              'Deleted!',
+              'Your file has been deleted.',
+              'success'
+            )
+          })
+        });
+      }
+    })
   }
 
   return (
@@ -106,7 +127,7 @@ function Library() {
                         <Grid className={classes.cardMain}>
                           <h3 className={classes.cardTitle}>{movie.Title}</h3>
                           <Icon>
-                              <img src={star} height={25} width={25}/>
+                              <img src={star} height={25} width={25} alt="star icon"/>
                           </Icon>
                           <span>{movie.imdbRating}</span>
                         </Grid>
@@ -114,10 +135,10 @@ function Library() {
                           <Button
                             variant="contained"
                             className={classes.buttonRed}
-                            onClick={() => removeMovie(movie.id)}
+                            onClick={() => removeMovie(movie.id, movie.Title)}
                           >
                             <Icon>
-                              <img src={book} height={25} width={25}/>
+                              <img src={book} height={25} width={25} alt="book icon"/>
                             </Icon>
                             Remove
                           </Button>
