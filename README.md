@@ -28,8 +28,8 @@ application.
 Before you begin, you will need to have the following tools installed on your computer:
 
 - **[Git](https://git-scm.com)**
-- **[Node.js](https://git-scm.com)**
-- **[Yarn](https://git-scm.com)**
+- **[Node.js](https://nodejs.org/en/)**
+- **[Yarn](https://yarnpkg.com/)**
 
 #### Installation
 
