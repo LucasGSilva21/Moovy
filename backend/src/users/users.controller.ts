@@ -1,7 +1,8 @@
-import { User } from './user';
 import { UsersService } from './users.service';
-import { Controller, Get, Param, Body, Post, Put, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Body, Post, Put, Delete, UseGuards, ValidationPipe } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { User } from './interfaces/user.interface';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('users')
 export class UsersController { 
@@ -22,7 +23,7 @@ export class UsersController {
     }
 
     @Post()
-    async create(@Body() user: User): Promise<User> {
+    async create(@Body(ValidationPipe) user: CreateUserDto): Promise<User> {
         return this.usersService.create(user);
     }
 
