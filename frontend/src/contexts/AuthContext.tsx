@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState, ReactNode } from "react";
+import Cookies from 'js-cookie';
 
 interface AuthContextData {
     token: string;
@@ -8,38 +9,28 @@ interface AuthContextData {
 }
 
 interface AuthProviderProps {
-    children: ReactNode
+    children: ReactNode;
 }
 
 export const AuthContext = createContext({} as AuthContextData);
 
 export function AuthProvider({ children }: AuthProviderProps) {
-    const [token, setToken] = useState('');
-    const [userId, setUserId] = useState('');
-
-    const TOKEN_KEY = "@Token";
-    const USER_ID = "@UserId";
+    const [token, setToken] = useState(Cookies.get('token') ?? '');
+    const [userId, setUserId] = useState(Cookies.get('userId') ?? '');
 
     useEffect(() => {
-		const localToken = localStorage.getItem(TOKEN_KEY);
-        const localUserId = localStorage.getItem(USER_ID);
-
-        localToken && setToken(localToken);
-        localUserId && setUserId(localUserId);
-	}, []);
+		Cookies.set('token', String(token));
+        Cookies.set('userId', String(userId));
+	}, [token, userId]);
 
     function login(token: string, userId: string) {
         setToken(token);
         setUserId(userId);
-        localStorage.setItem(TOKEN_KEY, token);
-        localStorage.setItem(USER_ID, userId);
     }
 
     function logout() {
         setToken('');
         setUserId('');
-        localStorage.removeItem(TOKEN_KEY);
-        localStorage.removeItem(USER_ID);
     }
 
     return (
