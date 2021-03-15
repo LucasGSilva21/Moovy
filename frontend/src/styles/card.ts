@@ -70,5 +70,22 @@ export const useStyles = makeStyles({
         outline: 'none',
         borderRadius: 15,
         paddingLeft: 15
+    },
+    loading: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    loadingTitle: {
+        paddingBottom: 10
+    },
+    notFound: {
+        display: 'flex',
+        justifyContent: 'center',
+        width: '100%',
+        paddingTop: 30
     }
 });

@@ -15,7 +15,8 @@ import {
   CardActions,
   Button,
   Icon,
-  IconButton
+  IconButton,
+  CircularProgress
 } from '@material-ui/core';
 
 import SearchIcon from '@material-ui/icons/Search';
@@ -47,6 +48,8 @@ function Search() {
 
   const [search, setSearch] = useState('');
   const [movies, setMovies] = useState<MovieDetail[]>([]);
+  const [isLoading , setIsLoading] = useState(false);
+  const [notFound, setNotFound] = useState(false);
 
   async function getDetail(movieId: string): Promise<MovieDetail> {
     const result = await apiOmdb.get(`/?i=${movieId}&apikey=${REACT_APP_KEY}`);
@@ -60,11 +63,22 @@ function Search() {
   }
 
   function getMovies() {
+    setIsLoading(true);
     apiOmdb.get(`/?s=${search}&apikey=${REACT_APP_KEY}`).then(response => {
       const data = response.data.Search;
-      Promise.all(data.map(async (element: Movie) => {
-        return await getDetail(element.imdbID)
-      })).then((result: any): void => setMovies(result))
+      if(data) {
+        Promise.all(data.map(async (element: Movie) => {
+          return await getDetail(element.imdbID)
+        })).then((result: any): void => {
+          setMovies(result);
+          setNotFound(false);
+          setIsLoading(false);
+        })
+      } else {
+        setMovies([]);
+        setNotFound(true);
+        setIsLoading(false);
+      }
     });
   }
 
@@ -96,8 +110,20 @@ function Search() {
         </Grid>
         <Grid justify='center' className={classes.listContainer}>
           <Grid container spacing={2} className={classes.list}>
+            { isLoading && 
+              <Grid className={classes.loading}>
+                <h3 className={classes.loadingTitle}>Loading...</h3>
+                <CircularProgress size={100} />
+              </Grid>
+            }
             {
-              movies ? (movies.map(movie => {
+              notFound &&
+              <Grid className={classes.notFound}>
+                <span>We couldn´t find the movies you were lookin for :(</span>
+              </Grid>
+            }
+            {
+              movies.length > 0 && (movies.map(movie => {
                 return (
                   <Grid key={movie.imdbID} item>
                     <Card className={classes.card}>
@@ -131,9 +157,7 @@ function Search() {
                     </Card>
                   </Grid>
                 )
-              })) : (
-                <p>We couldn´t find the movies you were lookin for :(</p>
-              )
+              }))
             }
           </Grid>
         </Grid>

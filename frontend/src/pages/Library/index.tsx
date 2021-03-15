@@ -14,12 +14,14 @@ import {
   CardMedia,
   CardActions,
   Button,
-  Icon
+  Icon,
+  CircularProgress
 } from '@material-ui/core';
 
 import { useStyles } from '../../styles/card';
 import book from '../../images/book.svg';
 import star from '../../images/star.svg';
+import { createTrue } from 'typescript';
 
 interface UserMovies {
   _id: string;
@@ -46,15 +48,25 @@ function Library() {
 
   const [userMovies, setUserMovies] = useState<UserMovies[]>([]);
   const [movies, setMovies] = useState<MovieDetail[]>([]);
-  const [empty, setEmpty] = useState(true);
+  const [isLoading , setIsLoading] = useState(false);
+  const [notFound, setNotFound] = useState(false);
 
   const MySwal = withReactContent(Swal);
 
   useEffect(() => {
+    setIsLoading(true);
 		apiMoovy.get(`/movies/user/${userId}`).then(response => {
       const { data } = response;
-      setUserMovies(data);
-      if(data.length === 0) setEmpty(false);
+      
+      if(data && data.length !== 0){
+        setUserMovies(data);
+        setNotFound(false);
+        setIsLoading(false);
+      }else{
+        setMovies([]);
+        setNotFound(true);
+        setIsLoading(false);
+      }
 		});
 	}, []);
 
@@ -70,9 +82,20 @@ function Library() {
   }
 
   useEffect(() => {
+    setIsLoading(true);
 		Promise.all(userMovies.map(async userMovie => {
       return await getDetail(userMovie._id ,userMovie.movieId)
-    })).then(result => setMovies(result))
+    })).then(data => {
+      if(data){
+        setMovies(data);
+        setNotFound(false);
+        setIsLoading(false);
+      }else{
+        setMovies([]);
+        setNotFound(true);
+        setIsLoading(false);
+      }
+    })
 	}, [userMovies]);
 
   function removeMovie(id: string, title: string) {
@@ -86,15 +109,26 @@ function Library() {
     }).then((result) => {
       if (result.isConfirmed) {
         apiMoovy.delete(`/movies/${id}`).then(() => {
+          setIsLoading(true);
           apiMoovy.get(`/movies/user/${userId}`).then(response => {
-            setUserMovies(response.data);
-          }).then(() => {
-            MySwal.fire(
-              'Deleted!',
-              'Your file has been deleted.',
-              'success'
-            )
-          })
+            const { data } = response;
+            
+            if(data && data.length !== 0){
+              setUserMovies(data);
+              setNotFound(false);
+              setIsLoading(false);
+            }else{
+              setMovies([]);
+              setNotFound(true);
+              setIsLoading(false);
+            }
+          });
+          
+          MySwal.fire(
+            'Deleted!',
+            'Your file has been deleted.',
+            'success'
+          )
         });
       }
     })
@@ -107,11 +141,19 @@ function Library() {
         <Grid className={classes.titleContainer}>
           <h2 className={classes.title}>My Library</h2>
         </Grid>
-        { !empty && 
-          <p>It looks like there are no movies in your library! Search for a movie you have watched and add it here!</p> 
-        }
         <Grid justify='center' className={classes.listContainer}>
           <Grid container spacing={2} className={classes.list}>
+            { isLoading && 
+              <Grid className={classes.loading}>
+                <h3 className={classes.loadingTitle}>Loading...</h3>
+                <CircularProgress size={100} />
+              </Grid>
+            }
+            { notFound && 
+              <Grid className={classes.notFound}>
+                <span>It looks like there are no movies in your library! Search for a movie you have watched and add it here!</span>
+              </Grid>
+            }
             {
               movies && movies.map(movie => {
                 return (
