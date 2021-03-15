@@ -1,11 +1,12 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const apiMoovy = axios.create({
     baseURL: 'http://localhost:3333'
 });
 
 apiMoovy.interceptors.request.use(async config => {
-    const token = localStorage.getItem("@Token")
+    const token = Cookies.get('token')
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

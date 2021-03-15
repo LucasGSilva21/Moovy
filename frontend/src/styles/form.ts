@@ -16,7 +16,7 @@ export const useStyles = makeStyles({
         borderRadius: 15,
         width: 500,
         height: 450,
-        padding: 50
+        padding: 50,
     },
     formTitle: {
         textAlign: 'center',
