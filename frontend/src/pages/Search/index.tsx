@@ -20,6 +20,7 @@ import {
 
 import SearchIcon from '@material-ui/icons/Search';
 import book from '../../images/book.svg';
+import star from '../../images/star.svg';
 import { useStyles } from '../../styles/card';
 
 interface Movie {
@@ -30,6 +31,13 @@ interface Movie {
   imdbID: string;
 }
 
+interface MovieDetail {
+  imdbID: string;
+  Poster: string;
+  Title: string;
+  imdbRating: string;
+}
+
 function Search() {
   const classes = useStyles();
   const { REACT_APP_KEY } = process.env;
@@ -38,11 +46,25 @@ function Search() {
   const MySwal = withReactContent(Swal);
 
   const [search, setSearch] = useState('');
-  const [movies, setMovies] = useState<Movie[]>([]);
+  const [movies, setMovies] = useState<MovieDetail[]>([]);
+
+  async function getDetail(movieId: string): Promise<MovieDetail> {
+    const result = await apiOmdb.get(`/?i=${movieId}&apikey=${REACT_APP_KEY}`);
+
+    const imdbID = result.data.imdbID;
+    const Poster = result.data.Poster; 
+    const Title = result.data.Title;
+    const imdbRating = result.data.imdbRating;
+
+    return { Poster, Title, imdbID, imdbRating }
+  }
 
   function getMovies() {
     apiOmdb.get(`/?s=${search}&apikey=${REACT_APP_KEY}`).then(response => {
-      setMovies(response.data.Search);
+      const data = response.data.Search;
+      Promise.all(data.map(async (element: Movie) => {
+        return await getDetail(element.imdbID)
+      })).then((result: any): void => setMovies(result))
     });
   }
 
@@ -77,7 +99,7 @@ function Search() {
             {
               movies ? (movies.map(movie => {
                 return (
-                  <Grid key={movie.imdbID} item lg={3} sm={6} xs={10} >
+                  <Grid key={movie.imdbID} item>
                     <Card className={classes.card}>
                       <CardContent className={classes.cardContent}>
                         <CardMedia 
@@ -86,7 +108,13 @@ function Search() {
                           title={movie.Title}
                           className={classes.cardImage}
                         />
-                        <h3>{movie.Title}</h3>
+                        <Grid className={classes.cardMain}>
+                          <h3 className={classes.cardTitle}>{movie.Title}</h3>
+                          <Icon>
+                              <img src={star} height={25} width={25} alt="star icon"/>
+                          </Icon>
+                          <span>{movie.imdbRating}</span>
+                        </Grid>
                         <CardActions className={classes.containerBotton}>
                           <Button
                             variant="contained"
