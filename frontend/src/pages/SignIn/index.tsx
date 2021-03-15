@@ -64,31 +64,34 @@ function SignIn() {
             alignItems="center"
         >
             <form onSubmit={loginService} className={classes.form}>
-                { error && <span className={classes.error}>{error}</span>}
-                <TextField 
-                    id="standard-basic" 
-                    label="Email *" 
-                    type="email"
-                    variant="outlined"
-                    onChange={e => setEmail(e.target.value)}
-                    className={classes.field}
-                />
-                <TextField 
-                    id="standard-basic" 
-                    label="Password *" 
-                    type="password"
-                    variant="outlined"
-                    onChange={e => setPassword(e.target.value)}
-                    className={classes.field}
-                />
-                <Button 
-                    variant="contained" 
-                    type="submit"
-                    className={classes.botton}
-                >
-                    Sign In
-                </Button>   
-                <Link to="/signup" className={classes.link}>Sign Up</Link> 
+                <h1 className={classes.formTitle}>Moovy</h1>
+                <div className={classes.formBody}>
+                    { error && <span className={classes.error}>{error}</span>}
+                    <TextField 
+                        id="standard-basic" 
+                        label="Email *" 
+                        type="email"
+                        variant="outlined"
+                        onChange={e => setEmail(e.target.value)}
+                        className={classes.field}
+                    />
+                    <TextField 
+                        id="standard-basic" 
+                        label="Password *" 
+                        type="password"
+                        variant="outlined"
+                        onChange={e => setPassword(e.target.value)}
+                        className={classes.field}
+                    />
+                    <Button 
+                        variant="contained" 
+                        type="submit"
+                        className={classes.botton}
+                    >
+                        Sign In
+                    </Button>   
+                    <Link to="/signup" className={classes.link}>Sign Up</Link>
+                </div> 
             </form>
         </Grid>
     )

@@ -12,12 +12,21 @@ export const useStyles = makeStyles({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center',
         backgroundColor: '#fff',
         borderRadius: 15,
         width: 500,
         height: 450,
         padding: 50
+    },
+    formTitle: {
+        textAlign: 'center',
+        fontFamily: 'Inter',
+        paddingBottom: 20
+    },
+    formBody: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
     },
     field: {
         marginBottom: 20,
