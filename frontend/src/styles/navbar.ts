@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles({
-    listContainer: {
+    nav: {
         width: '100%',
         height: 120,
         display: 'flex',
@@ -15,11 +15,18 @@ export const useStyles = makeStyles({
         paddingRight: 15,
         width: 200
     },
+    listContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        flex: 1
+    },
     list: {
         display: 'flex',
         flexDirection: 'row',
         listStyle: 'none',
-        flex: 1
+        flex: 1,
+        marginLeft: 25
     },
     item: {
         textDecoration: 'none',
@@ -28,35 +35,17 @@ export const useStyles = makeStyles({
         "&:hover": {
             color: '#F2911B',
         }
+    },
+    logout: {
+        width: 90,
+        marginRight: 25
+    },
+    link: {
+        display: 'flex',
+        alignItems: 'center',
+        "&:hover": {
+            color: '#F2911B',
+            cursor: 'pointer'
+        }
     }
 });
-
-/*
-import styled from 'styled-components';
-
-export const Nav = styled.nav`
-    display: flex;
-    align-items: center;
-    
-`;
-
-export const Logo = styled.h2`
-    
-    padding-left: 50px;
-    width: 15%;
-`;
-
-export const List = styled.ul`
-    display: flex;
-`;
-
-export const Item = styled.li`
-    align-items: center;
-    padding-right: 50px;
-    list-style: none;
-    font-family: Inter, sans-serif;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 16px;
-`;
-*/

@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../contexts/AuthContext';
 
-import { 
-  Grid
-} from '@material-ui/core';
+import { Grid, Icon } from '@material-ui/core';
+import { ExitToApp } from '@material-ui/icons';
+
 
 import { useStyles } from '../../styles/navbar';
 
 function Navbar() {
   const classes = useStyles();
+
+  const { logout } = useContext(AuthContext);
 
   return (
     <nav>
@@ -17,7 +20,7 @@ function Navbar() {
           direction="row"
           justify="flex-start"
           alignItems="center"
-          className={classes.listContainer}
+          className={classes.nav}
         >
           <Grid 
             container 
@@ -27,10 +30,18 @@ function Navbar() {
           >
             <h1>Moovy</h1>
           </Grid>
-          <ul className={classes.list}>
-            <li><Link to="/search" className={classes.item}>Search</Link></li>
-            <li><Link to="/library" className={classes.item}>My Library</Link></li>
-          </ul>
+          <Grid className={classes.listContainer}>
+            <ul className={classes.list}>
+              <li><Link to="/search" className={classes.item}>Search</Link></li>
+              <li><Link to="/library" className={classes.item}>My Library</Link></li>
+            </ul>
+            <div className={classes.logout}>
+              <a onClick={logout} className={classes.link}>
+                <span>Logout</span>
+                <Icon component={ExitToApp}></Icon>
+              </a>
+            </div>
+          </Grid>
         </Grid>
     </nav>
   );
