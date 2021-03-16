@@ -2,7 +2,7 @@ import { UsersService } from './users.service';
 import { Controller, Get, Param, Body, Post, Put, Delete, UseGuards, ValidationPipe } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { User } from './interfaces/user.interface';
-import { CreateUserDto } from './dto/create-user.dto';
+//import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('users')
 export class UsersController { 
@@ -23,7 +23,7 @@ export class UsersController {
     }
 
     @Post()
-    async create(@Body(ValidationPipe) user: CreateUserDto): Promise<User> {
+    async create(@Body(/*ValidationPipe*/) user: User): Promise<User> {
         return this.usersService.create(user);
     }
 
