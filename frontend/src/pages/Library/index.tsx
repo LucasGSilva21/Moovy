@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
 import Navbar from '../../components/Navbar';
+import MoovyCard from '../../components/MoovyCard';
 
 import { 
   Grid,
@@ -21,7 +22,6 @@ import {
 import { useStyles } from '../../styles/card';
 import book from '../../images/book.svg';
 import star from '../../images/star.svg';
-import { createTrue } from 'typescript';
 
 interface UserMovies {
   _id: string;
@@ -157,37 +157,23 @@ function Library() {
             {
               movies && movies.map(movie => {
                 return (
-                  <Grid key={movie.imdbID} item>
-                    <Card className={classes.card}>
-                      <CardContent className={classes.cardContent}>
-                        <CardMedia 
-                          component="img"
-                          src={movie.Poster}
-                          title={movie.Title}
-                          className={classes.cardImage}
-                        />
-                        <Grid className={classes.cardMain}>
-                          <h3 className={classes.cardTitle}>{movie.Title}</h3>
-                          <Icon>
-                              <img src={star} height={25} width={25} alt="star icon"/>
-                          </Icon>
-                          <span>{movie.imdbRating}</span>
-                        </Grid>
-                        <CardActions className={classes.containerBotton}>
-                          <Button
-                            variant="contained"
-                            className={classes.buttonRed}
-                            onClick={() => removeMovie(movie.id, movie.Title)}
-                          >
-                            <Icon>
-                              <img src={book} height={25} width={25} alt="book icon"/>
-                            </Icon>
-                            Remove
-                          </Button>
-                        </CardActions>
-                      </CardContent>
-                    </Card>
-                  </Grid>
+                  <MoovyCard 
+                    imdbID={movie.imdbID}
+                    Title={movie.Title}
+                    imdbRating={movie.imdbRating}
+                    Poster={movie.Poster}
+                  >
+                    <Button
+                      variant="contained"
+                      className={classes.buttonRed}
+                      onClick={() => removeMovie(movie.id, movie.Title)}
+                    >
+                      <Icon>
+                        <img src={book} height={25} width={25} alt="book icon"/>
+                      </Icon>
+                      Remove
+                    </Button>
+                  </MoovyCard>
                 )
               })
             }
