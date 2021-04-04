@@ -1,8 +1,10 @@
 import { UsersService } from './users.service';
-import { Controller, Get, Param, Body, Post, Put, Delete, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Param, Body, Post, Put, Delete, UseGuards, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { User } from './interfaces/user.interface';
-//import { CreateUserDto } from './dto/create-user.dto';
+import { UserDTO } from './dto/user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UserMapper } from './mapper/user.mapper';
 
 @Controller('users')
 export class UsersController { 
@@ -12,8 +14,10 @@ export class UsersController {
 
     @UseGuards(JwtAuthGuard)
     @Get()
-    async getAll(): Promise<User[]> {
-        return this.usersService.getAll();
+    async getAll(): Promise<UserDTO[]> {
+        const users = await this.usersService.getAll();
+
+        return users.map(user => UserMapper.fromEntityToDTO(user));
     }
 
     @UseGuards(JwtAuthGuard)
@@ -23,7 +27,7 @@ export class UsersController {
     }
 
     @Post()
-    async create(@Body(/*ValidationPipe*/) user: User): Promise<User> {
+    async create(@Body() user: CreateUserDto): Promise<User> {
         return this.usersService.create(user);
     }
 

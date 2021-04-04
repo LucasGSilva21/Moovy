@@ -12,8 +12,6 @@ export const UserSchema = new Schema({
         type: String,
         required: true,
         unique: true,
-        minlength: 5,
-        maxlength: 255,
         lowercase: true,
     },
     password: {
@@ -23,7 +21,7 @@ export const UserSchema = new Schema({
         required: true,
     },
 }, {
-    timestamps: true,
+    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
 });
 
 UserSchema.pre('save', async function(next: HookNextFunction){
