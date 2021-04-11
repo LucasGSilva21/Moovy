@@ -3,7 +3,7 @@ import { Controller, Get, Param, Body, Post, Put, Delete, UseGuards, UseIntercep
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { User } from './interfaces/user.interface';
 import { UserDTO } from './dto/user.dto';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDTO } from './dto/create-user.dto';
 import { UserMapper } from './mapper/user.mapper';
 
 @Controller('users')
@@ -27,7 +27,7 @@ export class UsersController {
     }
 
     @Post()
-    async create(@Body() user: CreateUserDto): Promise<User> {
+    async create(@Body() user: CreateUserDTO): Promise<User> {
         return this.usersService.create(user);
     }
 
