@@ -2,14 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './interfaces/user.interface';
-import { CreateUserDTO } from './dto/create-user.dto';
+import { UserDTO, CreateUserDTO } from './dto';
+import { UserMapper } from './mapper/user.mapper';
 
 @Injectable()
 export class UsersService { 
     constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
 
-    async getAll(): Promise<User[]> {
-        return await this.userModel.find().exec();
+    async getAll(): Promise<UserDTO[]> {
+        const users = await this.userModel.find().exec();
+
+        return users.map((user) => UserMapper.fromEntityToDTO(user));
     }
     
     async getById(id: string) {

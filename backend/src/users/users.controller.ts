@@ -4,7 +4,6 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { User } from './interfaces/user.interface';
 import { UserDTO } from './dto/user.dto';
 import { CreateUserDTO } from './dto/create-user.dto';
-import { UserMapper } from './mapper/user.mapper';
 
 @Controller('users')
 export class UsersController { 
@@ -15,9 +14,7 @@ export class UsersController {
     @UseGuards(JwtAuthGuard)
     @Get()
     async getAll(): Promise<UserDTO[]> {
-        const users = await this.usersService.getAll();
-
-        return users.map(user => UserMapper.fromEntityToDTO(user));
+        return await this.usersService.getAll();
     }
 
     @UseGuards(JwtAuthGuard)
