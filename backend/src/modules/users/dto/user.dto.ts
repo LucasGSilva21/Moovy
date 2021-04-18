@@ -6,7 +6,7 @@ import {
     IsNotEmpty,
     IsEmail,
   } from 'class-validator';
-import { BaseDTO } from '../../core/base.dto';
+import { BaseDTO } from '../../../core/base.dto';
 
 export class UserDTO extends BaseDTO {
     @ApiProperty()
