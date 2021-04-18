@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-export const MovieSchema = new Schema({
+export const UserMovieSchema = new Schema({
     userId: {
         type: Schema.Types.ObjectId,
         ref: 'User'

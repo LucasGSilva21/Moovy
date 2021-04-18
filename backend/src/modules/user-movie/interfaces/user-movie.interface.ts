@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
 
-export class Movie extends Document {
+export class UserMovie extends Document {
   userId: string;
   movieId: string;
 }
