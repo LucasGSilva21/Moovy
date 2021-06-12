@@ -25,18 +25,13 @@ import star from '../../images/star.svg';
 
 interface UserMovies {
   _id: string;
-  userId: string;
-  movieId: string;
   createdAt: string;
   updatedAt: string;
   _v: number;
-}
-
-interface MovieDetail {
-  id: string;
+  userId: string;
   imdbID: string;
-  Poster: string;
-  Title: string;
+  poster: string;
+  title: string;
   imdbRating: string;
 }
 
@@ -47,7 +42,6 @@ function Library() {
   const { REACT_APP_KEY } = process.env;
 
   const [userMovies, setUserMovies] = useState<UserMovies[]>([]);
-  const [movies, setMovies] = useState<MovieDetail[]>([]);
   const [isLoading , setIsLoading] = useState(false);
   const [notFound, setNotFound] = useState(false);
 
@@ -55,7 +49,7 @@ function Library() {
 
   useEffect(() => {
     setIsLoading(true);
-		apiMoovy.get(`/movies/user/${userId}`).then(response => {
+		apiMoovy.get(`/user-movies/user/${userId}`).then(response => {
       const { data } = response;
       
       if(data && data.length !== 0){
@@ -63,40 +57,11 @@ function Library() {
         setNotFound(false);
         setIsLoading(false);
       }else{
-        setMovies([]);
         setNotFound(true);
         setIsLoading(false);
       }
 		});
 	}, []);
-
-  async function getDetail(id: string, movieId: string): Promise<MovieDetail> {
-    const result = await apiOmdb.get(`/?i=${movieId}&apikey=${REACT_APP_KEY}`);
-
-    const imdbID = result.data.imdbID;
-    const Poster = result.data.Poster; 
-    const Title = result.data.Title;
-    const imdbRating = result.data.imdbRating;
-
-    return { Poster, Title, id, imdbID, imdbRating }
-  }
-
-  useEffect(() => {
-    setIsLoading(true);
-		Promise.all(userMovies.map(async userMovie => {
-      return await getDetail(userMovie._id ,userMovie.movieId)
-    })).then(data => {
-      if(data){
-        setMovies(data);
-        setNotFound(false);
-        setIsLoading(false);
-      }else{
-        setMovies([]);
-        setNotFound(true);
-        setIsLoading(false);
-      }
-    })
-	}, [userMovies]);
 
   function removeMovie(id: string, title: string) {
     MySwal.fire({
@@ -108,9 +73,9 @@ function Library() {
       confirmButtonText: 'Delete'
     }).then((result) => {
       if (result.isConfirmed) {
-        apiMoovy.delete(`/movies/${id}`).then(() => {
+        apiMoovy.delete(`/user-movies/${id}`).then(() => {
           setIsLoading(true);
-          apiMoovy.get(`/movies/user/${userId}`).then(response => {
+          apiMoovy.get(`/user-movies/user/${userId}`).then(response => {
             const { data } = response;
             
             if(data && data.length !== 0){
@@ -118,7 +83,6 @@ function Library() {
               setNotFound(false);
               setIsLoading(false);
             }else{
-              setMovies([]);
               setNotFound(true);
               setIsLoading(false);
             }
@@ -155,18 +119,18 @@ function Library() {
               </Grid>
             }
             {
-              movies && movies.map(movie => {
+              userMovies && userMovies.map(movie => {
                 return (
                   <MoovyCard 
                     imdbID={movie.imdbID}
-                    Title={movie.Title}
+                    Title={movie.title}
                     imdbRating={movie.imdbRating}
-                    Poster={movie.Poster}
+                    Poster={movie.poster}
                   >
                     <Button
                       variant="contained"
                       className={classes.buttonRed}
-                      onClick={() => removeMovie(movie.id, movie.Title)}
+                      onClick={() => removeMovie(movie._id, movie.title)}
                     >
                       <Icon>
                         <img src={book} height={25} width={25} alt="book icon"/>

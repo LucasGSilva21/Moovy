@@ -7,7 +7,7 @@ import withReactContent from 'sweetalert2-react-content';
 
 import Navbar from '../../components/Navbar';
 
-import { 
+import {
   Grid,
   Card,
   CardContent,
@@ -34,9 +34,13 @@ interface Movie {
 
 interface MovieDetail {
   imdbID: string;
-  Poster: string;
-  Title: string;
+  poster: string;
+  title: string;
   imdbRating: string;
+}
+
+interface SaveMovie extends MovieDetail {
+  userId: string;
 }
 
 function Search() {
@@ -48,25 +52,25 @@ function Search() {
 
   const [search, setSearch] = useState('');
   const [movies, setMovies] = useState<MovieDetail[]>([]);
-  const [isLoading , setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [notFound, setNotFound] = useState(false);
 
   async function getDetail(movieId: string): Promise<MovieDetail> {
     const result = await apiOmdb.get(`/?i=${movieId}&apikey=${REACT_APP_KEY}`);
 
     const imdbID = result.data.imdbID;
-    const Poster = result.data.Poster; 
-    const Title = result.data.Title;
+    const poster = result.data.Poster;
+    const title = result.data.Title;
     const imdbRating = result.data.imdbRating;
 
-    return { Poster, Title, imdbID, imdbRating }
+    return { poster, title, imdbID, imdbRating }
   }
 
   function getMovies() {
     setIsLoading(true);
     apiOmdb.get(`/?s=${search}&apikey=${REACT_APP_KEY}`).then(response => {
       const data = response.data.Search;
-      if(data) {
+      if (data) {
         Promise.all(data.map(async (element: Movie) => {
           return await getDetail(element.imdbID)
         })).then((result: any): void => {
@@ -82,10 +86,8 @@ function Search() {
     });
   }
 
-  function saveMovie(imdbID: string) {
-    apiMoovy.post('/movies', {
-      userId, movieId: imdbID
-    }).then(() => {
+  function saveMovie(data: SaveMovie) {
+    apiMoovy.post('/user-movies', data).then(() => {
       MySwal.fire({
         title: 'Success!',
         text: 'Saved in library.',
@@ -102,7 +104,7 @@ function Search() {
         <Grid container justify='center' className={classes.titleContainer}>
           <h2 className={classes.title}>Search</h2>
           <Grid container className={classes.inputContainer} justify='space-between'>
-            <input value={search} onChange={e => setSearch(e.target.value)} type="text" className={classes.input}/>
+            <input value={search} onChange={e => setSearch(e.target.value)} type="text" className={classes.input} />
             <IconButton type="submit" onClick={getMovies}>
               <SearchIcon />
             </IconButton>
@@ -110,7 +112,7 @@ function Search() {
         </Grid>
         <Grid justify='center' className={classes.listContainer}>
           <Grid container spacing={2} className={classes.list}>
-            { isLoading && 
+            {isLoading &&
               <Grid className={classes.loading}>
                 <h3 className={classes.loadingTitle}>Loading...</h3>
                 <CircularProgress size={100} />
@@ -128,16 +130,16 @@ function Search() {
                   <Grid key={movie.imdbID} item>
                     <Card className={classes.card}>
                       <CardContent className={classes.cardContent}>
-                        <CardMedia 
+                        <CardMedia
                           component="img"
-                          src={movie.Poster}
-                          title={movie.Title}
+                          src={movie.poster}
+                          title={movie.title}
                           className={classes.cardImage}
                         />
                         <Grid className={classes.cardMain}>
-                          <h3 className={classes.cardTitle}>{movie.Title}</h3>
+                          <h3 className={classes.cardTitle}>{movie.title}</h3>
                           <Icon>
-                              <img src={star} height={25} width={25} alt="star icon"/>
+                            <img src={star} height={25} width={25} alt="star icon" />
                           </Icon>
                           <span>{movie.imdbRating}</span>
                         </Grid>
@@ -145,11 +147,17 @@ function Search() {
                           <Button
                             variant="contained"
                             className={classes.buttonGreen}
-                            onClick={() => saveMovie(movie.imdbID)}
+                            onClick={() => saveMovie({
+                              userId: userId,
+                              imdbID: movie.imdbID,
+                              poster: movie.poster,
+                              title: movie.title,
+                              imdbRating: movie.imdbRating,
+                            })}
                           >
-                          <Icon>
-                              <img src={book} height={25} width={25} alt="book icon"/>
-                          </Icon>
+                            <Icon>
+                              <img src={book} height={25} width={25} alt="book icon" />
+                            </Icon>
                             Add to My Library
                           </Button>
                         </CardActions>
