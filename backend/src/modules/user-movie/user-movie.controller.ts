@@ -2,8 +2,9 @@ import { UserMovie } from './interfaces/user-movie.interface';
 import { UserMovieService } from './user-movie.service';
 import { Controller, Get, Param, Body, Post, Delete, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { UserMovieDTO } from './dto';
 
-@Controller('users-movies')
+@Controller('user-movies')
 export class UserMovieController {
     constructor(
         private userMovieService: UserMovieService,
@@ -11,7 +12,7 @@ export class UserMovieController {
 
     @UseGuards(JwtAuthGuard)
     @Get('user/:userId')
-    async getAllByUser(@Param('userId') userId: string): Promise<UserMovie[]> {
+    async getAllByUser(@Param('userId') userId: string): Promise<UserMovieDTO[]> {
         return this.userMovieService.getAll(userId);
     }
 
@@ -23,6 +24,7 @@ export class UserMovieController {
 
     @Post()
     async create(@Body() user: UserMovie): Promise<UserMovie> {
+        console.log('entrou')
         return this.userMovieService.create(user);
     }
 

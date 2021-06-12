@@ -5,7 +5,19 @@ export const UserMovieSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    movieId: {
+    imdbID: {
+        type: String,
+        required: true,
+    },
+    poster: {
+        type: String,
+        required: true,
+    },
+    title: {
+        type: String,
+        required: true,
+    },
+    imdbRating: {
         type: String,
         required: true,
     },
