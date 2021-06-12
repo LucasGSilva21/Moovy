@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserMovieMapper } from './mapper/user-movie.mapper';
+import { CreateUserMovieDTO } from './dto';
 
 @Injectable()
 export class UserMovieService {
@@ -18,8 +19,8 @@ export class UserMovieService {
         return await this.userMovieModel.findById(id).exec();
     }
 
-    async create(user: UserMovie) {
-        const createdMovie = new this.userMovieModel(user);
+    async create(userMovie: CreateUserMovieDTO) {
+        const createdMovie = new this.userMovieModel(userMovie);
         return await createdMovie.save();
     }
    
