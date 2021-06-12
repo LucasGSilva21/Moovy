@@ -21,7 +21,8 @@ export const UserSchema = new Schema({
         required: true,
     },
 }, {
-    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
+    timestamps: true
+    //{ createdAt: 'created_at', updatedAt: 'updated_at' }
 });
 
 UserSchema.pre('save', async function(next: HookNextFunction){

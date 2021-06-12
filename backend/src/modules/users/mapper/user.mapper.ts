@@ -10,8 +10,8 @@ export class UserMapper {
         entityDTO._id = entity._id;
         entityDTO.name = entity.name;
         entityDTO.email= entity.email;
-        entityDTO.created_at = entity.created_at;
-        entityDTO.updated_at = entity.updated_at;
+        entityDTO.createdAt = entity.createdAt;
+        entityDTO.updatedAt = entity.updatedAt;
 
         return entityDTO;
     }
