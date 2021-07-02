@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
-import { BaseDTO } from '../../../core/base.dto';
+import { BaseDTO } from '../../../common/base/base.dto';
 
 export class UserMovieDTO extends BaseDTO {
   @ApiProperty()
