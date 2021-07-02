@@ -6,14 +6,10 @@ import { UserMovieController } from './user-movie.controller';
 import { UserMovieService } from './user-movie.service';
 
 @Module({
-    imports: [
-        MongooseModule.forFeature([{ name: 'UserMovie', schema: UserMovieSchema }]),
-    ],
-    controllers: [
-        UserMovieController,
-    ],
-    providers: [
-        UserMovieService,
-    ],
+  imports: [
+    MongooseModule.forFeature([{ name: 'UserMovie', schema: UserMovieSchema }]),
+  ],
+  controllers: [UserMovieController],
+  providers: [UserMovieService],
 })
-export class UserMovieModule { }
+export class UserMovieModule {}

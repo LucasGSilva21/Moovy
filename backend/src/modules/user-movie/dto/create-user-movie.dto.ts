@@ -5,5 +5,5 @@ export class CreateUserMovieDTO extends OmitType(UserMovieDTO, [
   '_id',
   'createdAt',
   'updatedAt',
-  '_v'
+  '_v',
 ] as const) {}

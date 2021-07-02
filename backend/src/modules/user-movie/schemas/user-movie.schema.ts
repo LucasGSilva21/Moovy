@@ -1,26 +1,29 @@
 import { Schema } from 'mongoose';
 
-export const UserMovieSchema = new Schema({
+export const UserMovieSchema = new Schema(
+  {
     userId: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
+      type: Schema.Types.ObjectId,
+      ref: 'User',
     },
     imdbID: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     poster: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     title: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     imdbRating: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
-}, {
+  },
+  {
     timestamps: true,
-});
+  },
+);

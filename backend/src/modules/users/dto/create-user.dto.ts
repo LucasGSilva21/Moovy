@@ -1,17 +1,12 @@
 import { ApiProperty, OmitType } from '@nestjs/swagger';
-import {
-  IsString,
-  MinLength,
-  MaxLength,
-  IsNotEmpty,
-} from 'class-validator';
+import { IsString, MinLength, MaxLength, IsNotEmpty } from 'class-validator';
 import { UserDTO } from './user.dto';
 
 export class CreateUserDTO extends OmitType(UserDTO, [
   '_id',
   'createdAt',
   'updatedAt',
-  '_v'
+  '_v',
 ] as const) {
   @ApiProperty()
   @IsString()

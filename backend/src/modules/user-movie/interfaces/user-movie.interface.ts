@@ -8,4 +8,5 @@ export class UserMovie extends Document {
   imdbRating: string;
   createdAt: Date;
   updatedAt: Date;
+  _v: string;
 }
