@@ -1,12 +1,19 @@
-import { Schema, HookNextFunction } from 'mongoose';
+import { Schema, HookNextFunction, Document } from 'mongoose';
 import * as bcrypt from 'bcrypt';
+
+export interface User {
+  _id: string;
+  name: string;
+  email: string;
+  password: string;
+}
+
+export type UserDocument = User & Document;
 
 export const UserSchema = new Schema(
   {
     name: {
       type: String,
-      minlength: 3,
-      maxlength: 255,
       required: true,
     },
     email: {
