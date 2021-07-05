@@ -3,9 +3,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import { UsersModule } from '../modules/users/users.module';
-import { AuthModule } from '../modules/auth/auth.module';
-import { UserMovieModule } from '../modules/user-movie/user-movie.module';
+import { UsersModule } from '../users/users.module';
+import { AuthModule } from '../auth/auth.module';
+import { UserMovieModule } from '../user-movie/user-movie.module';
 
 @Module({
   imports: [
@@ -20,4 +20,4 @@ import { UserMovieModule } from '../modules/user-movie/user-movie.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
