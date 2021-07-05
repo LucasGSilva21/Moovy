@@ -3,10 +3,10 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class User extends Document {
   @ApiProperty()
-  readonly name: string;
+  name: string;
 
   @ApiProperty()
-  readonly email: string;
+  email: string;
 
-  readonly password: string;
+  password: string;
 }
