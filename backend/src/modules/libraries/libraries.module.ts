@@ -12,4 +12,4 @@ import { LibrariesService } from './libraries.service';
   controllers: [LibrariesController],
   providers: [LibrariesService],
 })
-export class UserMovieModule {}
+export class LibrariesModule {}

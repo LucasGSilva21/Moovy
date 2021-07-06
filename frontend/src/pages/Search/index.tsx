@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import { apiOmdb, apiMoovy } from '../../services/api';
 
@@ -87,7 +87,7 @@ function Search() {
   }
 
   function saveMovie(data: SaveMovie) {
-    apiMoovy.post('/user-movies', data).then(() => {
+    apiMoovy.post('/libraries', data).then(() => {
       MySwal.fire({
         title: 'Success!',
         text: 'Saved in library.',

@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
-import { apiOmdb, apiMoovy } from '../../services/api';
+import { apiMoovy } from '../../services/api';
 
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -10,10 +10,6 @@ import MoovyCard from '../../components/MoovyCard';
 
 import { 
   Grid,
-  Card,
-  CardContent,
-  CardMedia,
-  CardActions,
   Button,
   Icon,
   CircularProgress
@@ -21,7 +17,6 @@ import {
 
 import { useStyles } from '../../styles/card';
 import book from '../../images/book.svg';
-import star from '../../images/star.svg';
 
 interface UserMovies {
   _id: string;
@@ -39,7 +34,6 @@ function Library() {
   const classes = useStyles();
 
   const { userId } = useContext(AuthContext);
-  const { REACT_APP_KEY } = process.env;
 
   const [userMovies, setUserMovies] = useState<UserMovies[]>([]);
   const [isLoading , setIsLoading] = useState(false);
@@ -49,7 +43,7 @@ function Library() {
 
   useEffect(() => {
     setIsLoading(true);
-		apiMoovy.get(`/user-movies/user/${userId}`).then(response => {
+		apiMoovy.get(`/libraries/user/${userId}`).then(response => {
       const { data } = response;
       
       if(data && data.length !== 0){
@@ -73,9 +67,9 @@ function Library() {
       confirmButtonText: 'Delete'
     }).then((result) => {
       if (result.isConfirmed) {
-        apiMoovy.delete(`/user-movies/${id}`).then(() => {
+        apiMoovy.delete(`/libraries/${id}`).then(() => {
           setIsLoading(true);
-          apiMoovy.get(`/user-movies/user/${userId}`).then(response => {
+          apiMoovy.get(`/libraries/user/${userId}`).then(response => {
             const { data } = response;
             
             if(data && data.length !== 0){
