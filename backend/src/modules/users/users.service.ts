@@ -23,7 +23,7 @@ export class UsersService {
   async create(user: CreateUserDTO): Promise<User> {
     const createdUser = await this.userModel.create(user);
 
-    createdUser.password = undefined;
+    createdUser.password = null;
 
     return createdUser;
   }
