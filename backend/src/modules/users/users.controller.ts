@@ -13,27 +13,43 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { User } from './interfaces/user.interface';
-import { CreateUserDTO } from './dto/create-user.dto';
+import { UserPresentationDTO, CreateUserDTO } from './dto';
+import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('users')
+@ApiTags('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getAll(): Promise<User[]> {
-    return await this.usersService.getAll();
+  @ApiResponse({
+    status: 200,
+    type: [UserPresentationDTO],
+  })
+  async getAll(): Promise<UserPresentationDTO[]> {
+    return this.usersService.getAll();
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  async getById(@Param('id') id: string): Promise<User> {
+  @ApiResponse({
+    status: 200,
+    type: UserPresentationDTO,
+  })
+  async getById(@Param('id') id: string): Promise<UserPresentationDTO> {
     return this.usersService.getById(id);
   }
 
   @Post()
   @UsePipes(new ValidationPipe())
-  async create(@Body() user: CreateUserDTO): Promise<User> {
+  @ApiBody({ type: CreateUserDTO })
+  @ApiResponse({
+    status: 201,
+    description: 'The user has been successfully created.',
+    type: UserPresentationDTO,
+  })
+  async create(@Body() user: CreateUserDTO): Promise<UserPresentationDTO> {
     return this.usersService.create(user);
   }
 
