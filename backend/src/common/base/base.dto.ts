@@ -5,11 +5,11 @@ export class BaseDTO {
   _id?: string;
 
   @ApiProperty()
-  createdAt: Date;
+  createdAt?: Date;
 
   @ApiProperty()
-  updatedAt: Date;
+  updatedAt?: Date;
 
   @ApiProperty()
-  _v: string;
+  _v?: string;
 }
