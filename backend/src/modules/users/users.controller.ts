@@ -10,10 +10,11 @@ import {
   UseGuards,
   UsePipes,
   ValidationPipe,
+  HttpCode,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { User } from './interfaces/user.interface';
-import { UserPresentationDTO, CreateUserDTO } from './dto';
+import { UserPresentationDTO, CreateUserDTO, UpdateUserDTO } from './dto';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('users')
@@ -25,6 +26,7 @@ export class UsersController {
   @Get()
   @ApiResponse({
     status: 200,
+    description: 'Success',
     type: [UserPresentationDTO],
   })
   async getAll(): Promise<UserPresentationDTO[]> {
@@ -35,6 +37,7 @@ export class UsersController {
   @Get(':id')
   @ApiResponse({
     status: 200,
+    description: 'Success',
     type: UserPresentationDTO,
   })
   async getById(@Param('id') id: string): Promise<UserPresentationDTO> {
@@ -55,13 +58,26 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')
-  async update(@Param('id') id: string, @Body() user: User): Promise<User> {
+  @ApiResponse({
+    status: 200,
+    description: 'Success',
+    type: UserPresentationDTO,
+  })
+  async update(
+    @Param('id') id: string,
+    @Body() user: UpdateUserDTO,
+  ): Promise<User> {
     return this.usersService.update(id, user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
+  @HttpCode(204)
+  @ApiResponse({
+    status: 204,
+    description: 'Success',
+  })
   async delete(@Param('id') id: string) {
-    return this.usersService.delete(id);
+    this.usersService.delete(id);
   }
 }

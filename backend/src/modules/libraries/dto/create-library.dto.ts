@@ -1,18 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { OmitType } from '@nestjs/swagger';
+import { LibraryPresentationDTO } from './library-presentation.dto';
 
-export class CreateLibraryDTO {
-  @ApiProperty()
-  userId: string;
-
-  @ApiProperty()
-  imdbID: string;
-
-  @ApiProperty()
-  poster: string;
-
-  @ApiProperty()
-  title: string;
-
-  @ApiProperty()
-  imdbRating: string;
-}
+export class CreateLibraryDTO extends OmitType(LibraryPresentationDTO, [
+  '_id',
+  'createdAt',
+  'updatedAt',
+  '_v',
+] as const) {}

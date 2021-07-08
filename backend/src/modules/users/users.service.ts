@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './interfaces/user.interface';
-import { CreateUserDTO } from './dto';
+import { CreateUserDTO, UpdateUserDTO } from './dto';
 
 @Injectable()
 export class UsersService {
@@ -28,7 +28,7 @@ export class UsersService {
     return createdUser;
   }
 
-  async update(id: string, user: User) {
+  async update(id: string, user: UpdateUserDTO) {
     await this.userModel.updateOne({ _id: id }, user).exec();
 
     return this.getById(id);
