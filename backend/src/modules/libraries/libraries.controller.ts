@@ -13,7 +13,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CreateLibraryDTO } from './dto';
 import { ApiTags } from '@nestjs/swagger';
 
-@Controller('libraries')
+@Controller('api/v1/libraries')
 @ApiTags('libraries')
 export class LibrariesController {
   constructor(private librariesService: LibrariesService) {}
