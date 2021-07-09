@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const apiMoovy = axios.create({
-    baseURL: 'http://localhost:3333'
+    baseURL: 'http://localhost:3333/api/v1'
 });
 
 apiMoovy.interceptors.request.use(async config => {
