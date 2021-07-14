@@ -84,7 +84,7 @@ $ yarn start
 
 ## 🛠 Tools
 
-As seguintes ferramentas foram usadas na construção do projeto:
+The following tools were used in the building of the project:
 
 #### **Backend** ([NodeJS](https://nodejs.org/en/))
 
